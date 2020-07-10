@@ -57,7 +57,14 @@ questions:
   type: string
   label: The External URL for Harbor Service
   group: "Expose Service Options"
-  show_if: "expose.type=nodePort||expose.type=loadBalancer||expose.type=ingress"
+  show_if: "expose.type=nodePort||expose.type=loadBalancer||expose.type=ingress|expose.tls.enabled=true"
+- variable: externalURL
+  default: "http://core.harbor.domain"
+  description: "The external URL for Harbor core service (format: protocol://domain:port)"
+  type: string
+  label: The External URL for Harbor Service
+  group: "Expose Service Options"
+  show_if: "expose.type=nodePort||expose.type=loadBalancer||expose.type=ingress|expose.tls.enabled=false"
 - variable: expose.loadBalancer.IP
   default: ""
   required: true
