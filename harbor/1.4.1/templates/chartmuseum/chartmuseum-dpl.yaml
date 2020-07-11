@@ -53,7 +53,7 @@ spec:
             path: /health
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.chartmuseum.containerPort" . }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           httpGet:
