@@ -558,4 +558,4 @@ redis:
   podAnnotations: {}
 
 cert:
-  enabled: true
+  enabled: false
