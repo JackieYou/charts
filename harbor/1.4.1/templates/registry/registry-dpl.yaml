@@ -53,14 +53,14 @@ spec:
             path: /
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.registry.containerPort" . }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.registry.containerPort" . }}
-          initialDelaySeconds: 1
+          initialDelaySeconds: 30
           periodSeconds: 10
 {{- if .Values.registry.registry.resources }}
         resources:
