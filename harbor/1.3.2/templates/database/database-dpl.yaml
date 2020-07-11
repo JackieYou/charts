@@ -78,7 +78,7 @@ spec:
           subPath: {{ $database.subPath }}
       volumes:
       - name: database-data
-      {{- if and .Values.persistence.enabled (not $database.existingClaim) }}
+      {{- if and .Values.persistence.enabled }}
         persistentVolumeClaim:
           claimName: {{ $database.existingClaim | default (include "harbor.database" .) }}
       {{- else }}
