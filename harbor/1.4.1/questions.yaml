@@ -123,7 +123,7 @@ questions:
   description: "If undefined or null, uses the default StorageClass. Default to null"
   type: storageclass
   label: Default StorageClass for Trivy
-  show_if: "persistence.enabled=true&&trivy.enabled"
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
   group: "Trivy Settings"
 - variable: persistence.persistentVolumeClaim.trivy.size
   required: true
@@ -131,14 +131,14 @@ questions:
   description: "Trivy Persistent Volume Size"
   type: string
   label: Trivy Volume Size
-  show_if: "persistence.enabled=true&&trivy.enabled"
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
   group: "Trivy Settings"
 - variable: persistence.persistentVolumeClaim.trivy.existingClaim
   default: ""
   description: "If not empty, uses the specified existing PVC instead of creating new one"
   type: pvc
   label: Existing Persistent Volume Claim for Trivy
-  show_if: "persistence.enabled=true&&trivy.enabled"
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
   group: "Trivy Settings"
 # chartmuseum config
 - variable: chartmuseum.enabled
