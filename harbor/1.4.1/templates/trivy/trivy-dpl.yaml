@@ -127,7 +127,7 @@ spec:
             scheme: {{ include "harbor.component.scheme" . | upper }}
             path: /probe/healthy
             port: api-server
-          initialDelaySeconds: 5
+          initialDelaySeconds: 60
           periodSeconds: 10
           successThreshold: 1
           failureThreshold: 10
@@ -136,7 +136,7 @@ spec:
             scheme: {{ include "harbor.component.scheme" . | upper }}
             path: /probe/ready
             port: api-server
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
           periodSeconds: 10
           successThreshold: 1
           failureThreshold: 3
