@@ -60,7 +60,7 @@ spec:
       - name: data
       {{- if and .Values.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .$redis.existingClaim | default (include "harbor.redis" .) }}
+          claimName: {{ $redis.existingClaim | default (include "harbor.redis" .) }}
       {{- else }}
         emptyDir: {}
       {{- end }}
