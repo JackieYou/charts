@@ -1,3 +1,4 @@
+{{- $jobservice := .Values.persistence.persistentVolumeClaim.jobservice -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -100,7 +101,7 @@ spec:
       - name: job-logs
         {{- if and .Values.persistence.enabled (eq .Values.jobservice.jobLogger "file") }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.persistentVolumeClaim.jobservice.existingClaim | default (include "harbor.jobservice" .) }}  
+          claimName: {{ $jobservice.existingClaim | default (include "harbor.jobservice" .) }}  
         {{- else }}
         emptyDir: {}
         {{- end }}
