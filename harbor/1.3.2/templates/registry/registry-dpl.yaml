@@ -1,3 +1,4 @@
+{{- $registry := .Values.persistence.persistentVolumeClaim.registry -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -164,7 +165,7 @@ spec:
       - name: registry-data
       {{- if and .Values.persistence.enabled (eq .Values.persistence.imageChartStorage.type "filesystem") }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.persistentVolumeClaim.registry.existingClaim | default (include "harbor.registry" .) }}
+          claimName: {{ $registry.existingClaim | default (include "harbor.registry" .) }}
       {{- else }}
         emptyDir: {}
       {{- end }}
