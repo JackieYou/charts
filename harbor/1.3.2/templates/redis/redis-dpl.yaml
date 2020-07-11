@@ -58,9 +58,9 @@ spec:
           subPath: {{ $redis.subPath }}
       volumes:
       - name: data
-      {{- if and .Values.persistence.enabled (not $redis.existingClaim) }}
+      {{- if and .Values.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.persistentVolumeClaim.redis.existingClaim | default (include "harbor.redis" .) }}
+          claimName: {{ .$redis.existingClaim | default (include "harbor.redis" .) }}
       {{- else }}
         emptyDir: {}
       {{- end }}
