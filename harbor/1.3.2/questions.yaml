@@ -131,14 +131,14 @@ questions:
   description: "ChartMuseum Settings"
   type: string
   label: Chartmuseum Volume Size
-  show_if: "persistence.enabled=truechartmuseum.enabled"
+  show_if: "persistence.enabled=true&&chartmuseum.enabled"
   group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
   default: ""
   description: "If not empty, uses the specified existing PVC instead of creating new one"
   type: pvc
   label: Existing Persistent Volume Claim for Chartmuseum
-  show_if: "persistence.enabled=truechartmuseum.enabled"
+  show_if: "persistence.enabled=true&&chartmuseum.enabled"
   group: "ChartMuseum Settings"
 # jobservice config
 - variable: jobservice.jobLogger
