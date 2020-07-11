@@ -341,10 +341,10 @@ questions:
   description: "Enable Clair for vulnerability static analysis of containers images"
   type: boolean
   label: Enable Clair
-  group: "Notary, Clair & Cert"
+  group: "Notary & Clair"
 - variable: notary.enabled
   default: false
   description: "Notary is a tool for publishing and managing trusted collections of content like Docker images. Publishers can digitally sign collections and consumers can verify integrity and origin of content"
   type: boolean
   label: Enable Notary
-  group: "Notary, Clair & Cert"
+  group: "Notary & Clair"
