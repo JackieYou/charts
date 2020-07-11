@@ -111,55 +111,67 @@ questions:
   label: Existing Persistent Volume Claim for Registry
   group: "Persistence Storage Settings for registry"
   show_if: "persistence.enabled=true"
-# chartmuseum persistence config
-- variable: persistence.persistentVolumeClaim.chartmuseum.storageClass
-  default: ""
-  description: "If undefined or null, uses the default StorageClass. Default to null"
-  type: storageclass
-  label: Default StorageClass for ChartMuseum
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
-- variable: persistence.persistentVolumeClaim.chartmuseum.size
-  required: true
-  default: "1Gi"
-  description: "Chartmuseum Persistent Volume Size"
-  type: string
-  label: Chartmuseum Volume Size
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
-- variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
-  default: ""
-  description: "If not empty, uses the specified existing PVC instead of creating new one"
-  type: pvc
-  label: Existing Persistent Volume Claim for Chartmuseum
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
-# trivy persistence config
+# trivy config
+- variable: trivy.enabled
+  default: true
+  description: "Enable Trivy as a part of Harbor vulnerability scan feature"
+  type: boolean
+  label: Enable Trivy 
+  group: "Trivy Settings"
 - variable: persistence.persistentVolumeClaim.trivy.storageClass
   default: ""
   description: "If undefined or null, uses the default StorageClass. Default to null"
   type: storageclass
   label: Default StorageClass for Trivy
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for Trivy"
+  show_if: "persistence.enabled=true&&trivy.enabled"
+  group: "Trivy Settings"
 - variable: persistence.persistentVolumeClaim.trivy.size
   required: true
   default: "1Gi"
   description: "Trivy Persistent Volume Size"
   type: string
   label: Trivy Volume Size
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for Trivy"
+  show_if: "persistence.enabled=true&&trivy.enabled"
+  group: "Trivy Settings"
 - variable: persistence.persistentVolumeClaim.trivy.existingClaim
   default: ""
   description: "If not empty, uses the specified existing PVC instead of creating new one"
   type: pvc
   label: Existing Persistent Volume Claim for Trivy
-  show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for Trivy"
+  show_if: "persistence.enabled=true&&trivy.enabled"
+  group: "Trivy Settings"
+# chartmuseum config
+- variable: chartmuseum.enabled
+  default: true
+  description: "Enable Chartmuseum to support Helm chart repository in Harbor"
+  type: boolean
+  label: Enable Helm Chart Repository in Harbor
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for ChartMuseum
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.size
+  required: true
+  default: "1Gi"
+  description: "ChartMuseum Settings"
+  type: string
+  label: Chartmuseum Volume Size
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Chartmuseum
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
 # jobservice config
 - variable: jobservice.jobLogger
-  default: "database"
+  default: "file"
   required: true
   description: "Config JobService JobLogger type."
   type: enum
@@ -358,22 +370,10 @@ questions:
   description: "Enable Clair for vulnerability static analysis of containers images"
   type: boolean
   label: Enable Clair
-  group: "Notary, Clair & Trivy"
+  group: "Notary & Clair"
 - variable: notary.enabled
   default: false
   description: "Notary is a tool for publishing and managing trusted collections of content like Docker images"
   type: boolean
   label: Enable Notary
-  group: "Notary, Clair & Trivy"
-- variable: trivy.enabled
-  default: true
-  description: "Enable Trivy as a part of Harbor vulnerability scan feature"
-  type: boolean
-  label: Enable Trivy 
-  group: "Notary, Clair & Trivy"
-- variable: chartmuseum.enabled
-  default: true
-  description: "Enable Chartmuseum to support Helm chart repository in Harbor"
-  type: boolean
-  label: Enable Helm Chart Repository in Harbor
-  group: "Notary, Clair & Trivy"
+  group: "Notary & Clair"
