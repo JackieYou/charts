@@ -111,29 +111,35 @@ questions:
   label: Existing Persistent Volume Claim for Registry
   group: "Persistence Storage Settings for Registry"
   show_if: "persistence.enabled=true"
-# chartmuseum persistence config
+# chartmuseum config
+- variable: chartmuseum.enabled
+  default: true
+  description: "Enable Chartmuseum to support Helm chart repository in Harbor"
+  type: boolean
+  label: Enable Helm Chart Repository in Harbor
+  group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.storageClass
   default: ""
   description: "If undefined or null, uses the default StorageClass. Default to null"
   type: storageclass
   label: Default StorageClass for ChartMuseum
   show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
+  group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.size
   required: true
   default: "1Gi"
-  description: "Chartmuseum Persistent Volume Size"
+  description: "ChartMuseum Settings"
   type: string
   label: Chartmuseum Volume Size
   show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
+  group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
   default: ""
   description: "If not empty, uses the specified existing PVC instead of creating new one"
   type: pvc
   label: Existing Persistent Volume Claim for Chartmuseum
   show_if: "persistence.enabled=true"
-  group: "Persistence Storage Settings for ChartMuseum"
+  group: "ChartMuseum Settings"
 # jobservice config
 - variable: jobservice.jobLogger
   default: "database"
@@ -341,16 +347,4 @@ questions:
   description: "Notary is a tool for publishing and managing trusted collections of content like Docker images. Publishers can digitally sign collections and consumers can verify integrity and origin of content"
   type: boolean
   label: Enable Notary
-  group: "Notary, Clair & Cert"
-- variable: chartmuseum.enabled
-  default: true
-  description: "Enable Chartmuseum to support Helm chart repository in Harbor"
-  type: boolean
-  label: Enable Helm Chart Repository in Harbor
-  group: "Notary, Clair & Cert"
-- variable: cert.enabled
-  default: false
-  description: "Enable cert to distribute Harbor CA certs to each node under `/etc/docker/certs.d/` path"
-  type: boolean
-  label: Enable Cert DaemonSet
   group: "Notary, Clair & Cert"
