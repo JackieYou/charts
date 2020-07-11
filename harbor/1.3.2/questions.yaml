@@ -123,7 +123,7 @@ questions:
   description: "If undefined or null, uses the default StorageClass. Default to null"
   type: storageclass
   label: Default StorageClass for ChartMuseum
-  show_if: "persistence.enabled=true"
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
   group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.size
   required: true
@@ -131,14 +131,14 @@ questions:
   description: "ChartMuseum Settings"
   type: string
   label: Chartmuseum Volume Size
-  show_if: "persistence.enabled=true"
+  show_if: "persistence.enabled=truechartmuseum.enabled"
   group: "ChartMuseum Settings"
 - variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
   default: ""
   description: "If not empty, uses the specified existing PVC instead of creating new one"
   type: pvc
   label: Existing Persistent Volume Claim for Chartmuseum
-  show_if: "persistence.enabled=true"
+  show_if: "persistence.enabled=truechartmuseum.enabled"
   group: "ChartMuseum Settings"
 # jobservice config
 - variable: jobservice.jobLogger
