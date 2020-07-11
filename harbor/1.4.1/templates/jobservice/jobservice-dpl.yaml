@@ -53,14 +53,14 @@ spec:
             path: /api/v1/stats
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.jobservice.containerPort" . }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /api/v1/stats
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.jobservice.containerPort" . }}
-          initialDelaySeconds: 20
+          initialDelaySeconds: 30
           periodSeconds: 10
 {{- if .Values.jobservice.resources }}
         resources:
