@@ -142,7 +142,7 @@ questions:
   group: "ChartMuseum Settings"
 # jobservice config
 - variable: jobservice.jobLogger
-  default: "database"
+  default: "file"
   required: true
   description: "Config JobService JobLogger type."
   type: enum
