@@ -1,0 +1,13 @@
+app:
+  name: online-res
+
+deployment:
+  replicas: "1"
+  pullpolicy: IfNotPresent
+  image: online-res:latest
+
+service:
+  type: ClusterIP
+
+ingress:
+  host: res.youjiqing.xyz

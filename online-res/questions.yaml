@@ -1,0 +1,48 @@
+bels:
+  io.cattle.role: cluster
+questions:
+- variable: app.name
+  required: true
+  default: online-res
+  description: "The name of deployment & service & ingress."
+  type: string
+  label: APP Name
+  group: "DEPLOYMENT"
+- variable: deployment.replicas
+  required: true
+  default: 1
+  description: "The number of pod replicas running."
+  type: string
+  label: Number of Pod
+  group: "DEPLOYMENT"
+- variable: deployment.image
+  required: true
+  default: online-res:latest
+  description: "The image of your app, eg: nginx:latest."
+  type: string
+  label: Image of Pod
+  group: "DEPLOYMENT"
+- variable: deployment.pullpolicy
+  required: true
+  default: IfNotPresent
+  description: "The image pull policy."
+  type: enum
+  label: Image Pull Policy
+  group: "DEPLOYMENT"
+  options:
+  - "IfNotPresent"
+  - "Always"
+- variable: service.type
+  required: true
+  default: ClusterIP
+  description: "The service type, only support ClusterIP."
+  type: string
+  label: Service Type
+  group: "SERVICE & INGRESS" 
+- variable: ingress.host
+  required: true
+  default: res.youjiqing.xyz
+  description: "Domain name to access you app, FQDN."
+  type: string
+  label: Host
+  group: "SERVICE & INGRESS" 
