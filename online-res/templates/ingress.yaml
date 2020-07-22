@@ -13,3 +13,4 @@ spec:
       - backend:
           serviceName: {{ .Values.app.name }}
           servicePort: 80
+        path: /share
