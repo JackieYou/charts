@@ -46,3 +46,32 @@ questions:
   type: string
   label: Host
   group: "SERVICE & INGRESS" 
+- variable: persistence.enabled
+  default: true
+  description: "Enable persistent volume for online resources"
+  type: boolean
+  required: true
+  label: Enable Res Persistent Volume
+  group: "Persistence Storage Settings"
+- variable: persistence.persistentVolumeClaim.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass
+  show_if: "persistence.enabled=true"
+  group: "Persistence Storage Settings"
+- variable: persistence.persistentVolumeClaim.size
+  required: true
+  default: "10Gi"
+  description: "Registry Persistent Volume Size"
+  type: string
+  label: Registry Volume Size
+  group: "Persistence Storage Settings"
+  show_if: "persistence.enabled=true"
+- variable: persistence.persistentVolumeClaim.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim
+  group: "Persistence Storage Settings"
+  show_if: "persistence.enabled=true"

@@ -11,3 +11,12 @@ service:
 
 ingress:
   host: res.youjiqing.xyz
+
+persistence: 
+  enabled: true
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    storageClass: ""
+    size: 10Gi
+    existingClaim: ""
+    accessMode: ReadWriteOnce

@@ -23,3 +23,16 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
+        volumeMounts:
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          mountPath: /root/share
+          readOnly: false
+        {{- end }}
+      volumes:
+      {{- if .Values.persistence.enabled }}
+      - name: "data"
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.persistentVolumeClaim.existingClaim | default "online-res" }}
+      {{- end }}
+
