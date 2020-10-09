@@ -46,14 +46,14 @@ spec:
             path: /
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.portal.containerPort" . }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 120
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.portal.containerPort" . }}
-          initialDelaySeconds: 1
+          initialDelaySeconds: 30
           periodSeconds: 10
         ports:
         - containerPort: {{ template "harbor.portal.containerPort" . }}

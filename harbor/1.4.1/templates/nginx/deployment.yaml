@@ -54,14 +54,14 @@ spec:
             scheme: {{ .scheme }}
             path: /
             port: {{ .port }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 120
           periodSeconds: 10
         readinessProbe:
           httpGet:
             scheme: {{ .scheme }}
             path: /
             port: {{ .port }}
-          initialDelaySeconds: 1
+          initialDelaySecondsi: 30
           periodSeconds: 10
 {{- if .Values.nginx.resources }}
         resources:

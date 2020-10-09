@@ -144,14 +144,14 @@ spec:
             path: /api/health
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.registryctl.containerPort" . }}
-          initialDelaySeconds: 300
+          initialDelaySeconds: 120
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /api/health
             scheme: {{ include "harbor.component.scheme" . | upper }}
             port: {{ template "harbor.registryctl.containerPort" . }}
-          initialDelaySeconds: 1
+          initialDelaySeconds: 30
           periodSeconds: 10
 {{- if .Values.registry.controller.resources }}
         resources:
