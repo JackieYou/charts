@@ -122,19 +122,19 @@ persistence:
       # Set it to "-" to disable dynamic provisioning
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 5Gi
     chartmuseum:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 1Gi
     jobservice:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 1Gi
     # If external database is used, the following settings for database will
     # be ignored
@@ -142,7 +142,7 @@ persistence:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 1Gi
     # If external Redis is used, the following settings for Redis will
     # be ignored
@@ -150,7 +150,7 @@ persistence:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteOnce
+      accessMode: ReadWriteMany
       size: 1Gi
   # Define which storage backend is used for registry and chartmuseum to store
   # images and charts. Refer to
