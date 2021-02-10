@@ -1,0 +1,379 @@
+labels:
+  io.cattle.role: project # options are cluster/project
+questions:
+# Global Options
+- variable: harborAdminPassword
+  required: true
+  default: "admin"
+  description: "The initial password of Harbor admin. Change it from portal after launching Harbor"
+  type: password
+  label: The Initial Password of Harbor Admin
+  group: "Global Options"
+- variable: logLevel
+  required: true
+  default: "info"
+  type: enum
+  label: The Log Level
+  group: "Global Options"
+  options:
+  - "debug"
+  - "info"
+  - "warning"
+  - "error"
+  - "fatal"
+# Harbor Expose Service
+- variable: expose.type
+  required: true
+  default: "ingress"
+  description: "Set the way how to expose the service"
+  type: enum
+  label: Harbor Proxy Service Type
+  group: "Expose Service Options"
+  options:
+  - "ingress"
+  - "nodePort"
+  - "loadBalancer"
+- variable: expose.ingress.hosts.core
+  required: true
+  default: ""
+  description: "The host of Harbor core service in ingress rule, e.g, core.harbor.domain"
+  type: string
+  label: Ingress Hostname of Harbor
+  group: "Expose Service Options"
+  show_if: "expose.type=ingress||expose.type=loadBalancer"
+- variable: expose.tls.enabled
+  default: "false"
+  required: true
+  description: "How to access Harbor, HTTPS or HTTP "
+  type: enum
+  label: Enable tls or not
+  group: "Expose Service Options"
+  options:
+  - "true"
+  - "false"
+- variable: externalURL
+  default: "https://core.harbor.domain"
+  description: "The external URL for Harbor core service (format: protocol://domain:port)"
+  type: string
+  label: The External URL for Harbor Service
+  group: "Expose Service Options"
+  show_if: "expose.tls.enabled=true"
+- variable: externalURL
+  default: "http://core.harbor.domain"
+  description: "The external URL for Harbor core service (format: protocol://domain:port)"
+  type: string
+  label: The External URL for Harbor Service
+  group: "Expose Service Options"
+  show_if: "expose.tls.enabled=false"
+- variable: expose.loadBalancer.IP
+  default: ""
+  required: true
+  description: "Set the IP if the LoadBalancer supports assigning IP"
+  type: string
+  label: Set LoadBalancer IP
+  show_if: "expose.type=loadBalancer"
+  group: "Expose Service Options"
+- variable: expose.tls.secretName
+  default: ""
+  description: "The secret must contain keys named tls.crt and tls.key that contain the certificate and private key to use for TLS"
+  type: string
+  label: Select Your Harbor TLS Certificate
+  group: "Expose Service Options"
+  show_if: "expose.tls.enabled=true"
+# persistence options
+- variable: persistence.enabled
+  default: false
+  description: "Enable persistent volume type for Harbor services"
+  type: boolean
+  required: true
+  label: Enable Harbor Persistent Volume
+  group: "Persistence Storage Settings"
+# registry persistence config
+- variable: persistence.persistentVolumeClaim.registry.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for Registry
+  show_if: "persistence.enabled=true"
+  group: "Persistence Storage Settings for registry"
+- variable: persistence.persistentVolumeClaim.registry.size
+  required: true
+  default: "5Gi"
+  description: "Registry Persistent Volume Size"
+  type: string
+  label: Registry Volume Size
+  group: "Persistence Storage Settings for registry"
+  show_if: "persistence.enabled=true"
+- variable: persistence.persistentVolumeClaim.registry.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Registry
+  group: "Persistence Storage Settings for registry"
+  show_if: "persistence.enabled=true"
+# trivy config
+- variable: trivy.enabled
+  default: true
+  description: "Enable Trivy as a part of Harbor vulnerability scan feature"
+  type: boolean
+  label: Enable Trivy 
+  group: "Trivy Settings"
+- variable: persistence.persistentVolumeClaim.trivy.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for Trivy
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
+  group: "Trivy Settings"
+- variable: persistence.persistentVolumeClaim.trivy.size
+  required: true
+  default: "1Gi"
+  description: "Trivy Persistent Volume Size"
+  type: string
+  label: Trivy Volume Size
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
+  group: "Trivy Settings"
+- variable: persistence.persistentVolumeClaim.trivy.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Trivy
+  show_if: "persistence.enabled=true&&trivy.enabled=true"
+  group: "Trivy Settings"
+# chartmuseum config
+- variable: chartmuseum.enabled
+  default: true
+  description: "Enable Chartmuseum to support Helm chart repository in Harbor"
+  type: boolean
+  label: Enable Helm Chart Repository in Harbor
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for ChartMuseum
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.size
+  required: true
+  default: "1Gi"
+  description: "ChartMuseum Settings"
+  type: string
+  label: Chartmuseum Volume Size
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
+- variable: persistence.persistentVolumeClaim.chartmuseum.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Chartmuseum
+  show_if: "persistence.enabled=true&&chartmuseum.enabled=true"
+  group: "ChartMuseum Settings"
+# jobservice config
+- variable: jobservice.jobLogger
+  default: "file"
+  required: true
+  description: "Config JobService JobLogger type."
+  type: enum
+  label: Config JobService JobLogger Type
+  group: "Jobservice Settings"
+  options:
+  - "file"
+  - "database"
+  - "stdout"
+- variable: persistence.persistentVolumeClaim.jobservice.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for Jobservice
+  show_if: "persistence.enabled=true&&jobservice.jobLogger=file"
+  group: "Jobservice Settings"
+- variable: persistence.persistentVolumeClaim.jobservice.size
+  required: true
+  default: "1Gi"
+  description: "Jobservice Persistent Volume Size"
+  type: string
+  label: Jobservice Volume Size
+  show_if: "persistence.enabled=true&&jobservice.jobLogger=file"
+  group: "Jobservice Settings"
+- variable: persistence.persistentVolumeClaim.jobservice.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Jobservice
+  show_if: "persistence.enabled=true&&jobservice.jobLogger=file"
+  group: "Jobservice Settings"
+# database
+- variable: database.type
+  required: true
+  default: "internal"
+  description: "Config Database type, set to internal to deploy a database server as part of this deployment."
+  type: enum
+  label: Config Database Type
+  group: "Database Settings"
+  options:
+  - "internal"
+  - "external"
+- variable: persistence.persistentVolumeClaim.database.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for Database
+  show_if: "database.type=internal&&persistence.enabled=true"
+  group: "Database Settings"
+- variable: persistence.persistentVolumeClaim.database.size
+  required: true
+  default: "2Gi"
+  description: "Database Persistent Volume Size"
+  type: string
+  label: Database Volume Size
+  group: "Database Settings"
+  show_if: "database.type=internal&&persistence.enabled=true"
+- variable: persistence.persistentVolumeClaim.database.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Database
+  group: "Database Settings"
+  show_if: "database.type=internal&&persistence.enabled=true"
+- variable: database.external.host
+  required: true
+  default: ""
+  description: "Host of the external database"
+  type: string
+  label: External Database Host
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.username
+  required: true
+  default: ""
+  description: "Existing username in the external DB"
+  type: string
+  label: External Database username
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.password
+  default: ""
+  required: true
+  description: "External database password"
+  type: password
+  label: External Database password
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.coreDatabase
+  default: "registry"
+  required: true
+  description: "The database used by core service"
+  type: string
+  label: Database Name of Core Service
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.clairDatabase
+  default: "clair"
+  required: true
+  description: "The database used by Clair service"
+  type: string
+  label: Database Name of Clair
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.notaryServerDatabase
+  default: "notary_server"
+  required: true
+  description: "The database used by Notary server"
+  type: string
+  label: Database Name of Notary Server
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.notarySignerDatabase
+  default: "notary_signer"
+  required: true
+  description: "The database used by Notary signer"
+  type: string
+  label: Database Name of Notary Signer
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.sslmode
+  default: "disable"
+  required: true
+  description: "Connection method of external database"
+  type: string
+  label: External Database sslmode
+  show_if: "database.type=external"
+  group: "Database Settings"
+- variable: database.external.port
+  default: "5432"
+  required: true
+  description: "External database port number"
+  type: string
+  label: External Database Port
+  show_if: "database.type=external"
+  group: "Database Settings"
+# redis
+- variable: redis.type
+  required: true
+  default: "internal"
+  description: "Deploy a redis-HA server as part of this deployment, or set to false and configure an external redis service."
+  type: enum
+  label: Config Redis Type
+  group: "Redis Settings"
+  options:
+  - "internal"
+  - "external"
+- variable: persistence.persistentVolumeClaim.redis.storageClass
+  default: ""
+  description: "If undefined or null, uses the default StorageClass. Default to null"
+  type: storageclass
+  label: Default StorageClass for Redis
+  show_if: "redis.type=internal&&persistence.enabled=true"
+  group: "Redis Settings"
+- variable: persistence.persistentVolumeClaim.redis.size
+  required: true
+  default: "1Gi"
+  description: "Redis Persistent Volume Size"
+  type: string
+  label: Redis Volume Size
+  group: "Redis Settings"
+  show_if: "redis.type=internal&&persistence.enabled=true"
+- variable: persistence.persistentVolumeClaim.redis.existingClaim
+  default: ""
+  description: "If not empty, uses the specified existing PVC instead of creating new one"
+  type: pvc
+  label: Existing Persistent Volume Claim for Redis
+  group: "Redis Settings"
+  show_if: "redis.type=internal&&persistence.enabled=true"
+- variable: redis.external.host
+  required: true
+  default: ""
+  description: "Host of the external redis"
+  type: string
+  label: External Reids Host
+  show_if: "redis.type=external"
+  group: "Redis Settings"
+- variable: redis.external.port
+  required: true
+  default: "6379"
+  description: "Existing username in the external DB"
+  type: string
+  label: External Redis username
+  show_if: "redis.type=external"
+  group: "Redis Settings"
+- variable: redis.external.password
+  default: ""
+  description: "External redis server password"
+  type: password
+  label: External Redis password
+  show_if: "redis.type=external"
+  group: "Redis Settings"
+# clair and notary options
+- variable: clair.enabled
+  default: true
+  description: "Enable Clair for vulnerability static analysis of containers images"
+  type: boolean
+  label: Enable Clair
+  group: "Notary & Clair"
+- variable: notary.enabled
+  default: false
+  description: "Notary is a tool for publishing and managing trusted collections of content like Docker images"
+  type: boolean
+  label: Enable Notary
+  group: "Notary & Clair"

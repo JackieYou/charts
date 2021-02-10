@@ -1,0 +1,29 @@
+{{- if .Values.persistence.enabled }}
+{{- $redis := .Values.persistence.persistentVolumeClaim.redis -}}
+{{- if and (not $redis.existingClaim) (eq .Values.persistence.imageChartStorage.type "filesystem") }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "harbor.redis" . }}
+  {{- if eq .Values.persistence.resourcePolicy "keep" }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: redis
+spec:
+  accessModes: 
+    - {{ $redis.accessMode }}
+  resources:
+    requests:
+      storage: {{ $redis.size }}
+  {{- if $redis.storageClass }}
+    {{- if eq "-" $redis.storageClass }}
+  storageClassName: ""
+    {{- else }}
+  storageClassName: {{ $redis.storageClass }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

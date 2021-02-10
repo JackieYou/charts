@@ -1,0 +1,29 @@
+{{- if .Values.persistence.enabled }}
+{{- $database := .Values.persistence.persistentVolumeClaim.database -}}
+{{- if and (not $database.existingClaim) (eq .Values.persistence.imageChartStorage.type "filesystem") }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "harbor.database" . }}
+  {{- if eq .Values.persistence.resourcePolicy "keep" }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: database
+spec:
+  accessModes: 
+    - {{ $database.accessMode }}
+  resources:
+    requests:
+      storage: {{ $database.size }}
+  {{- if $database.storageClass }}
+    {{- if eq "-" $database.storageClass }}
+  storageClassName: ""
+    {{- else }}
+  storageClassName: {{ $database.storageClass }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

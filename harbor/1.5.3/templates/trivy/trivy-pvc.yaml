@@ -1,0 +1,29 @@
+{{- if .Values.persistence.enabled }}
+{{- $trivy := .Values.persistence.persistentVolumeClaim.trivy -}}
+{{- if and (not $trivy.existingClaim) (eq .Values.persistence.imageChartStorage.type "filesystem") }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "harbor.trivy" . }}
+  {{- if eq .Values.persistence.resourcePolicy "keep" }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: trivy
+spec:
+  accessModes: 
+    - {{ $trivy.accessMode }}
+  resources:
+    requests:
+      storage: {{ $trivy.size }}
+  {{- if $trivy.storageClass }}
+    {{- if eq "-" $trivy.storageClass }}
+  storageClassName: ""
+    {{- else }}
+  storageClassName: {{ $trivy.storageClass }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
