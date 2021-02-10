@@ -197,7 +197,7 @@ persistence:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWritemany
+      accessMode: ReadWriteMany
       size: 5Gi
     jobservice:
       existingClaim: ""
